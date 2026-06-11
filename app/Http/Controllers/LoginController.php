@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Login;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
         $query = Login::where('user_id', auth()->id());
 
@@ -22,17 +20,11 @@ class LoginController extends Controller
         return view('logins.index', compact('logins'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('logins.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -55,28 +47,19 @@ class LoginController extends Controller
         return redirect()->route('logins.index')->with('success', 'Login guardado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Login $login)
     {
-        //
+        abort_if($login->user_id !== auth()->id(), 403);
+        return view('logins.show', compact('login'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Login $login)
     {
-         abort_if($login->user_id !== auth()->id(), 403);
-
+        abort_if($login->user_id !== auth()->id(), 403);
         return view('logins.edit', compact('login'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Login $login)
     {
         abort_if($login->user_id !== auth()->id(), 403);
 
@@ -99,15 +82,10 @@ class LoginController extends Controller
         return redirect()->route('logins.index')->with('success', 'Login actualizado correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Login $login)
     {
         abort_if($login->user_id !== auth()->id(), 403);
-
         $login->delete();
-
         return redirect()->route('logins.index')->with('success', 'Login eliminado correctamente.');
     }
 }

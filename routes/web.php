@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CardController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Login;
 
 Route::get('/', function () {
     return view('welcome');
