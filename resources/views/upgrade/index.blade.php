@@ -14,7 +14,7 @@
                 
                 <div class="flex items-baseline text-gray-900 mb-6">
                     <span class="text-5xl font-extrabold tracking-tight">$4.99</span>
-                    <span class="ms-1 text-gray-500 text-lg">/month</span>
+                    <span class="ms-1 text-gray-500 text-lg">/lifetime</span>
                 </div>
                 
                 <ul role="list" class="space-y-4 list-none p-0 m-0">
@@ -38,28 +38,7 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                         </svg>
                         <span class="text-base font-normal text-gray-600">Organización por carpetas</span>
-                    </li>
-                    
-                    <li class="flex items-center gap-3">
-                        <svg class="w-5 h-5 shrink-0 text-blue-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                        </svg>
-                        <span class="text-base font-normal text-gray-600">Cifrado de grado militar AES-256</span>
-                    </li>
-
-                    <li class="flex items-center gap-3 line-through text-gray-400 decoration-gray-400">
-                        <svg class="w-5 h-5 shrink-0 text-blue-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                        </svg>
-                        <span class="text-base font-normal">Acceso multi-usuario (SaaS Equipos)</span>
-                    </li>
-                    
-                    <li class="flex items-center gap-3 line-through text-gray-400 decoration-gray-400">
-                        <svg class="w-5 h-5 shrink-0 text-blue-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                        </svg>
-                        <span class="text-base font-normal">Soporte prioritario 24/7</span>
-                    </li>
+                    </li> 
                 </ul>
             </div>
         </div>

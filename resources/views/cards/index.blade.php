@@ -62,7 +62,7 @@
                     <div>
                         <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">CVV</div>
                         <div class="flex items-center gap-2">
-                            <span class="font-semibold">***</span>
+                            <span class="font-semibold">{{ $card->cvv_encrypted }}</span>
                             <button onclick="copyText('{{ $card->cvv_encrypted }}', this)"
                                 class="text-slate-400 hover:text-white transition text-xs border border-slate-500 rounded px-1.5 py-0.5">
                                 Copiar
