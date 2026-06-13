@@ -41,7 +41,17 @@
                     + Añadir Nota
                 </a>
             </div>
-            
+
+            <div class="space-y-1">
+                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 block">Identidades</span>
+                <a href="{{ route('identities.index') }}" class="block px-4 py-2 rounded text-sm text-slate-400 hover:bg-slate-800 hover:text-blue-400 transition duration-200 {{ request()->routeIs('identities.*') ? 'bg-slate-800 text-blue-400' : '' }}">
+                    🪪 Ver Mis Identidades
+                </a>
+                <a href="{{ route('identities.create') }}" class="block px-4 py-2 rounded text-sm text-slate-400 hover:bg-slate-800 hover:text-blue-400 transition duration-200">
+                    + Añadir Identidad
+                </a>
+            </div>
+
         </nav>
     </div>
 
