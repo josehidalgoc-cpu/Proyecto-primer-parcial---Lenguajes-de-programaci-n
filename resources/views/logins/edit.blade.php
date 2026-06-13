@@ -19,10 +19,17 @@
         </div>
 
         <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Correo electrónico</label>
+            <input type="email" name="email" value="{{ old('email', $login->email) }}"
+                class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="Ej. juan@gmail.com">
+        </div>
+
+        <div>
             <label class="block text-sm font-semibold text-gray-700 mb-1">Usuario</label>
             <input type="text" name="username" value="{{ old('username', $login->username) }}"
                 class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="Ej. juan@gmail.com">
+                placeholder="Ej. juan123">
         </div>
 
         <div>
@@ -37,7 +44,7 @@
             <label class="block text-sm font-semibold text-gray-700 mb-1">URL</label>
             <input type="text" name="url" value="{{ old('url', $login->url) }}"
                 class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="https://gmail.com">
+                placeholder="https://paginaweb.com">m
         </div>
 
         <div>

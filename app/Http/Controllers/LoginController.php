@@ -22,14 +22,25 @@ class LoginController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->is_premium) {
+            return redirect()->route('upgrade.show')
+                ->with('warning', 'Suscríbete a Premium para guardar logins.');
+        }
+
         return view('logins.create');
     }
 
     public function store(Request $request)
     {
+        if (!auth()->user()->is_premium) {
+            return redirect()->route('upgrade.show')
+                ->with('warning', 'Suscríbete a Premium para guardar logins.');
+        }
+
         $request->validate([
             'title'              => 'required|string|max:255',
             'username'           => 'nullable|string|max:255',
+            'email'              => 'nullable|email|max:255',
             'password_encrypted' => 'required|string',
             'url'                => 'nullable|url',
             'notes'              => 'nullable|string',
@@ -39,6 +50,7 @@ class LoginController extends Controller
             'user_id'            => auth()->id(),
             'title'              => $request->title,
             'username'           => $request->username,
+            'email'              => $request->email,
             'password_encrypted' => $request->password_encrypted,
             'url'                => $request->url,
             'notes'              => $request->notes,
@@ -66,6 +78,7 @@ class LoginController extends Controller
         $request->validate([
             'title'              => 'required|string|max:255',
             'username'           => 'nullable|string|max:255',
+            'email'              => 'nullable|email|max:255',
             'password_encrypted' => 'required|string',
             'url'                => 'nullable|url',
             'notes'              => 'nullable|string',
@@ -74,6 +87,7 @@ class LoginController extends Controller
         $login->update([
             'title'              => $request->title,
             'username'           => $request->username,
+            'email'              => $request->email,
             'password_encrypted' => $request->password_encrypted,
             'url'                => $request->url,
             'notes'              => $request->notes,

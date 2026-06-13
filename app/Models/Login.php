@@ -10,6 +10,7 @@ class Login extends Model
         'user_id',
         'title',
         'username',
+        'email',
         'password_encrypted',
         'url',
         'notes',

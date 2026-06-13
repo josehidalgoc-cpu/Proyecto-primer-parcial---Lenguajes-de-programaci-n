@@ -22,6 +22,10 @@ class CardController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->is_premium) {
+            return redirect()->route('upgrade.show')
+            ->with('warning', 'Suscríbete a Premium para guardar tarjetas.');
+        }
         return view('cards.create');
     }
 
@@ -59,7 +63,10 @@ class CardController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $card = Card::findOrFail($id);
+        abort_if($card->user_id !== auth()->id(), 403);
+
+        return view('cards.show', compact('card'));
     }
 
     /**
@@ -67,6 +74,8 @@ class CardController extends Controller
      */
     public function edit(string $id)
     {
+        $card = Card::findOrFail($id);
+
         abort_if($card->user_id !== auth()->id(), 403);
 
         return view('cards.edit', compact('card'));
@@ -77,6 +86,8 @@ class CardController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $card = Card::findOrFail($id);
+
         abort_if($card->user_id !== auth()->id(), 403);
 
         $request->validate([
@@ -107,6 +118,8 @@ class CardController extends Controller
      */
     public function destroy(string $id)
     {
+        $card = Card::findOrFail($id);
+        
         abort_if($card->user_id !== auth()->id(), 403);
 
         $card->delete();

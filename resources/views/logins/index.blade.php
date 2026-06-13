@@ -28,49 +28,128 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Título</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Correo</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Usuario</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contraseña</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">URL</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Notas</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 text-sm text-gray-700">
                 @forelse($logins as $login)
                     <tr class="hover:bg-gray-50 transition duration-150">
-                        <td class="px-6 py-4 font-semibold">{{ $login->title }}</td>
-                        <td class="px-6 py-4 text-gray-500">{{ $login->username ?? '—' }}</td>
-                        <td class="px-6 py-4 text-gray-500">
-                            @if($login->url)
-                                <a href="{{ $login->url }}" target="_blank" class="text-blue-500 hover:underline">{{ $login->url }}</a>
-                            @else
-                                —
-                            @endif
+
+                        {{-- Título --}}
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <span class="font-semibold">{{ $login->title }}</span>
+                                <button onclick="copyText('{{ $login->title }}', this)"
+                                    class="text-gray-400 hover:text-blue-500 transition text-xs border border-gray-300 rounded px-1.5 py-0.5">
+                                    Copiar
+                                </button>
+                            </div>
                         </td>
+
+                        {{-- Correo --}}
+                        <td class="px-6 py-4 text-gray-500">
+                            <div class="flex items-center gap-2">
+                                <span>{{ $login->email ?? '—' }}</span>
+                                @if($login->email)
+                                    <button onclick="copyText('{{ $login->email }}', this)"
+                                        class="text-gray-400 hover:text-blue-500 transition text-xs border border-gray-300 rounded px-1.5 py-0.5">
+                                        Copiar
+                                    </button>
+                                @endif
+                            </div>
+                        </td>
+
+                        {{-- Usuario --}}
+                        <td class="px-6 py-4 text-gray-500">
+                            <div class="flex items-center gap-2">
+                                <span>{{ $login->username ?? '—' }}</span>
+                                @if($login->username)
+                                    <button onclick="copyText('{{ $login->username }}', this)"
+                                        class="text-gray-400 hover:text-blue-500 transition text-xs border border-gray-300 rounded px-1.5 py-0.5">
+                                        Copiar
+                                    </button>
+                                @endif
+                            </div>
+                        </td>
+
+                        {{-- Contraseña --}}
+                        <td class="px-6 py-4 text-gray-500">
+                            <div class="flex items-center gap-2">
+                                <span>{{ $login->password_encrypted }}</span>
+                                <button onclick="copyText('{{ $login->password_encrypted }}', this)"
+                                    class="text-gray-400 hover:text-blue-500 transition text-xs border border-gray-300 rounded px-1.5 py-0.5">
+                                    Copiar
+                                </button>
+                            </div>
+                        </td>
+
+                        {{-- URL --}}
+                        <td class="px-6 py-4 text-gray-500">
+                            <div class="flex items-center gap-2">
+                                @if($login->url)
+                                    <a href="{{ $login->url }}" target="_blank" class="text-blue-500 hover:underline">{{ $login->url }}</a>
+                                    <button onclick="copyText('{{ $login->url }}', this)"
+                                        class="text-gray-400 hover:text-blue-500 transition text-xs border border-gray-300 rounded px-1.5 py-0.5">
+                                        Copiar
+                                    </button>
+                                @else
+                                    —
+                                @endif
+                            </div>
+                        </td>
+
+                        {{-- Notas --}}
+                        <td class="px-6 py-4 text-gray-500">
+                            {{ $login->notes ?? '—' }}
+                        </td>
+
+                        {{-- Acciones --}}
                         <td class="px-6 py-4">
                             <div class="flex gap-2">
-                                <a href="{{ route('logins.edit', $login) }}" 
-                                style="background-color: #facc15; color: #000;" 
-                                class="py-1 px-3 rounded text-xs font-semibold">
+                                <a href="{{ route('logins.edit', $login) }}"
+                                    style="background-color: #facc15; color: #000;"
+                                    class="py-1 px-3 rounded text-xs font-semibold">
                                     Editar
                                 </a>
-                                <form method="POST" action="{{ route('logins.destroy', $login) }}" 
+                                <form method="POST" action="{{ route('logins.destroy', $login) }}"
                                     onsubmit="return confirm('¿Eliminar este login?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button style="background-color: #ef4444; color: #fff;" 
-                                            class="py-1 px-3 rounded text-xs font-semibold">
+                                    <button style="background-color: #ef4444; color: #fff;"
+                                        class="py-1 px-3 rounded text-xs font-semibold">
                                         Eliminar
                                     </button>
                                 </form>
                             </div>
                         </td>
+
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-6 py-8 text-center text-gray-400">No tienes logins guardados aún.</td>
+                        <td colspan="7" class="px-6 py-8 text-center text-gray-400">No tienes logins guardados aún.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+function copyText(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+        const original = btn.innerHTML;
+        btn.innerHTML = 'Copiado';
+        btn.style.color = '#16a34a';
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.style.color = '';
+        }, 1500);
+    });
+}
+</script>
 @endsection

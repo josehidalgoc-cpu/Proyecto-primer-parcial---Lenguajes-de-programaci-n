@@ -20,34 +20,94 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse($cards as $card)
             <div class="bg-gradient-to-br from-slate-700 to-slate-900 text-white p-6 rounded-xl shadow-lg">
-                <div class="flex justify-between items-start mb-6">
+
+                {{-- Marca --}}
+                <div class="flex justify-between items-start mb-4">
                     <span class="text-sm font-semibold tracking-widest uppercase text-slate-300">{{ $card->brand ?? 'Tarjeta' }}</span>
                 </div>
-                <div class="text-lg font-mono tracking-widest mb-4">
-                    **** **** **** {{ substr($card->card_number_encrypted, -4) }}
+
+                {{-- Número --}}
+                <div class="mb-1 text-xs text-slate-400 uppercase tracking-wider">Número</div>
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="text-lg font-mono tracking-widest">{{ $card->card_number_encrypted }}</span>
+                    <button onclick="copyText('{{ $card->card_number_encrypted }}', this)"
+                        class="text-slate-400 hover:text-white transition text-xs border border-slate-500 rounded px-1.5 py-0.5">
+                        Copiar
+                    </button>
                 </div>
-                <div class="flex justify-between items-end">
-                    <div>
-                        <p class="text-xs text-slate-400">Titular</p>
-                        <p class="font-semibold">{{ $card->cardholder_name }}</p>
-                    </div>
-                    <div>
-                        <p class="text-xs text-slate-400">Vence</p>
-                        <p class="font-semibold">{{ $card->expiry_month }}/{{ $card->expiry_year }}</p>
-                    </div>
+
+                {{-- Titular --}}
+                <div class="mb-1 text-xs text-slate-400 uppercase tracking-wider">Titular</div>
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="font-semibold">{{ $card->cardholder_name }}</span>
+                    <button onclick="copyText('{{ $card->cardholder_name }}', this)"
+                        class="text-slate-400 hover:text-white transition text-xs border border-slate-500 rounded px-1.5 py-0.5">
+                        Copiar
+                    </button>
                 </div>
-                <div class="flex gap-2 mt-4">
-                    <a href="{{ route('cards.edit', $card) }}" class="bg-yellow-400 hover:bg-yellow-500 text-white py-1 px-3 rounded text-xs">Editar</a>
-                    <form method="POST" action="{{ route('cards.destroy', $card) }}" onsubmit="return confirm('¿Eliminar esta tarjeta?')">
+
+                {{-- Vencimiento y CVV --}}
+                <div class="flex justify-between items-end mb-4">
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Vence</div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-semibold">{{ $card->expiry_month }}/{{ $card->expiry_year }}</span>
+                            <button onclick="copyText('{{ $card->expiry_month }}/{{ $card->expiry_year }}', this)"
+                                class="text-slate-400 hover:text-white transition text-xs border border-slate-500 rounded px-1.5 py-0.5">
+                                Copiar
+                            </button>
+                        </div>
+                    </div>
+                    @if($card->cvv_encrypted)
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">CVV</div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-semibold">***</span>
+                            <button onclick="copyText('{{ $card->cvv_encrypted }}', this)"
+                                class="text-slate-400 hover:text-white transition text-xs border border-slate-500 rounded px-1.5 py-0.5">
+                                Copiar
+                            </button>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+
+                {{-- Acciones --}}
+                <div class="flex gap-2 mt-2 border-t border-slate-600 pt-4">
+                    <a href="{{ route('cards.edit', $card) }}"
+                        style="background-color: #facc15; color: #000;"
+                        class="py-1 px-3 rounded text-xs font-semibold">
+                        Editar
+                    </a>
+                    <form method="POST" action="{{ route('cards.destroy', $card) }}"
+                        onsubmit="return confirm('¿Eliminar esta tarjeta?')">
                         @csrf
                         @method('DELETE')
-                        <button class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded text-xs">Eliminar</button>
+                        <button style="background-color: #ef4444; color: #fff;"
+                            class="py-1 px-3 rounded text-xs font-semibold">
+                            Eliminar
+                        </button>
                     </form>
                 </div>
+
             </div>
         @empty
             <div class="col-span-3 text-center text-gray-400 py-8">No tienes tarjetas guardadas aún.</div>
         @endforelse
     </div>
 </div>
+
+<script>
+function copyText(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+        const original = btn.innerHTML;
+        btn.innerHTML = '¡Copiado!';
+        btn.style.color = '#4ade80';
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.style.color = '';
+        }, 1500);
+    });
+}
+</script>
 @endsection
