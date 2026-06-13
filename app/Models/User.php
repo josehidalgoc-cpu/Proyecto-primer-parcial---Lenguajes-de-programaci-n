@@ -47,4 +47,21 @@ class User extends Authenticatable
             'is_premium' => 'boolean',
         ];
     }
+
+    public function logins(){
+        return $this->hasMany(Login::class);
+    }
+
+    public function cards(){
+        return $this->hasMany(Card::class);
+    }
+
+    public function identities(){
+        return $this->hasMany(Identity::class);
+    }
+
+    public function secureNotes(){
+        return $this->hasMany(SecureNote::class);
+    }
+
 }

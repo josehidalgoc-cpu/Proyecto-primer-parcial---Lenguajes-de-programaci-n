@@ -7,6 +7,7 @@ use App\Http\Controllers\CardController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Login;
 use App\Http\Controllers\UpgradeController;
+use App\Http\Controllers\SecureNoteController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('cards', CardController::class);
     Route::get('/upgrade', [UpgradeController::class, 'show'])->name('upgrade.show');
     Route::post('/upgrade', [UpgradeController::class, 'activate'])->name('upgrade.activate');
+    Route::resource('secure-notes', SecureNoteController::class);
 });
 
 Route::middleware('auth')->group(function () {

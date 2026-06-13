@@ -31,6 +31,17 @@
                     + Añadir Tarjeta
                 </a>
             </div>
+
+            <div class="space-y-1">
+                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 block">Notas Seguras</span>
+                <a href="{{ route('secure-notes.index') }}" class="block px-4 py-2 rounded text-sm text-slate-400 hover:bg-slate-800 hover:text-blue-400 transition duration-200 {{ request()->routeIs('secure-notes.*') ? 'bg-slate-800 text-blue-400' : '' }}">
+                    🗒️ Ver Mis Notas
+                </a>
+                <a href="{{ route('secure-notes.create') }}" class="block px-4 py-2 rounded text-sm text-slate-400 hover:bg-slate-800 hover:text-blue-400 transition duration-200">
+                    + Añadir Nota
+                </a>
+            </div>
+            
         </nav>
     </div>
 
