@@ -34,12 +34,37 @@ class CardController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has('card_number_encrypted')) {
+            $request->merge([
+                'card_number_encrypted' => preg_replace('/\D/', '', $request->card_number_encrypted)
+            ]);
+        }
+
         $request->validate([
             'cardholder_name'       => 'required|string|max:255',
-            'card_number_encrypted' => 'required|string',
-            'expiry_month'          => 'required|string|size:2',
-            'expiry_year'           => 'required|string|size:4',
-            'cvv_encrypted'         => 'nullable|string',
+            'card_number_encrypted' => 'required|numeric|digits_between:12,19',
+            'expiry_month'          => 'required|numeric|between:01,12',
+            'expiry_year'           => [
+                'required',
+                'numeric',
+                function ($attribute, $value, $fail) use ($request) {
+                    $month = intval($request->expiry_month);
+                    $year = intval($value);
+
+                    // Normalizar año si viene en formato AA (ej: 26 -> 2026)
+                    if ($year < 100) {
+                        $year += 2000;
+                    }
+
+                    $currentYear = intval(date('Y'));
+                    $currentMonth = intval(date('m'));
+
+                    if ($year < $currentYear || ($year === $currentYear && $month < $currentMonth)) {
+                        $fail('La fecha de expiración debe ser posterior o igual a la fecha actual.');
+                    }
+                }
+            ],
+            'cvv_encrypted'         => 'nullable|numeric|digits_between:3,4',
             'brand'                 => 'nullable|string|max:20',
             'notes'                 => 'nullable|string',
         ]);
@@ -48,7 +73,7 @@ class CardController extends Controller
             'user_id'               => auth()->id(),
             'cardholder_name'       => $request->cardholder_name,
             'card_number_encrypted' => $request->card_number_encrypted,
-            'expiry_month'          => $request->expiry_month,
+            'expiry_month'          => str_pad($request->expiry_month, 2, '0', STR_PAD_LEFT),
             'expiry_year'           => $request->expiry_year,
             'cvv_encrypted'         => $request->cvv_encrypted,
             'brand'                 => $request->brand,
@@ -87,15 +112,38 @@ class CardController extends Controller
     public function update(Request $request, string $id)
     {
         $card = Card::findOrFail($id);
-
         abort_if($card->user_id !== auth()->id(), 403);
+
+        if ($request->has('card_number_encrypted')) {
+            $request->merge([
+                'card_number_encrypted' => preg_replace('/\D/', '', $request->card_number_encrypted)
+            ]);
+        }
 
         $request->validate([
             'cardholder_name'       => 'required|string|max:255',
-            'card_number_encrypted' => 'required|string',
-            'expiry_month'          => 'required|string|size:2',
-            'expiry_year'           => 'required|string|size:4',
-            'cvv_encrypted'         => 'nullable|string',
+            'card_number_encrypted' => 'required|numeric|digits_between:12,19',
+            'expiry_month'          => 'required|numeric|between:01,12',
+            'expiry_year'           => [
+                'required',
+                'numeric',
+                function ($attribute, $value, $fail) use ($request) {
+                    $month = intval($request->expiry_month);
+                    $year = intval($value);
+
+                    if ($year < 100) {
+                        $year += 2000;
+                    }
+
+                    $currentYear = intval(date('Y'));
+                    $currentMonth = intval(date('m'));
+
+                    if ($year < $currentYear || ($year === $currentYear && $month < $currentMonth)) {
+                        $fail('La fecha de expiración debe ser posterior o igual a la fecha actual.');
+                    }
+                }
+            ],
+            'cvv_encrypted'         => 'nullable|numeric|digits_between:3,4',
             'brand'                 => 'nullable|string|max:20',
             'notes'                 => 'nullable|string',
         ]);
@@ -103,7 +151,7 @@ class CardController extends Controller
         $card->update([
             'cardholder_name'       => $request->cardholder_name,
             'card_number_encrypted' => $request->card_number_encrypted,
-            'expiry_month'          => $request->expiry_month,
+            'expiry_month'          => str_pad($request->expiry_month, 2, '0', STR_PAD_LEFT),
             'expiry_year'           => $request->expiry_year,
             'cvv_encrypted'         => $request->cvv_encrypted,
             'brand'                 => $request->brand,
@@ -119,7 +167,7 @@ class CardController extends Controller
     public function destroy(string $id)
     {
         $card = Card::findOrFail($id);
-        
+
         abort_if($card->user_id !== auth()->id(), 403);
 
         $card->delete();
