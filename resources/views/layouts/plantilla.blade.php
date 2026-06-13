@@ -14,8 +14,6 @@
         @include('layouts.sidebar')
 
         <div class="flex-1 flex flex-col">
-            
-            @include('layouts.navigation')
 
             <main class="flex-1 p-8">
                 
