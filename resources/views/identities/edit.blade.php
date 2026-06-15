@@ -76,7 +76,7 @@
                 class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 <option value="">Sin carpeta</option>
                 @foreach($folders as $folder)
-                    <option value="{{ $folder->id }}" {{ old('folder_id', $secureNote->folder_id) == $folder->id ? 'selected' : '' }}></option>
+                    <option value="{{ $folder->id }}" {{ old('folder_id', $identity->folder_id) == $folder->id ? 'selected' : '' }}>
                 @endforeach
             </select>
         </div>
