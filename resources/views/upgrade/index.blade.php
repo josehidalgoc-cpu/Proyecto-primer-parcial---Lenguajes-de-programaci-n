@@ -34,11 +34,8 @@
                     </li>
                     
                     <li class="flex items-center gap-3">
-                        <svg class="w-5 h-5 shrink-0 text-blue-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                        </svg>
-                        <span class="text-base font-normal text-gray-600">Organización por carpetas</span>
-                    </li> 
+                        <span class="text-base font-normal text-gray-600">Mantén tus contraseñas y tarjetas seguras, sin restricciones. Un solo pago, acceso de por vida.+</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -99,7 +96,7 @@
                     <div class="pt-2">
                         <button type="submit"
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition-colors duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40">
-                            Suscribirse por $4.99/mes
+                            Pagar $4.99 una sola vez!
                         </button>
                     </div>
                 </form>
