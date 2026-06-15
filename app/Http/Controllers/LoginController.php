@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Login;
+use App\Models\Folder;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class LoginController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Login::where('user_id', auth()->id());
+        $query = Login::where('user_id', auth()->id())->with('folder');
 
         if ($request->filled('search')) {
             $query->where('title', 'like', '%' . $request->search . '%');
@@ -27,7 +29,9 @@ class LoginController extends Controller
                 ->with('warning', 'Suscríbete a Premium para guardar logins.');
         }
 
-        return view('logins.create');
+        $folders = Folder::where('user_id', auth()->id())->orderBy('name')->get();
+
+        return view('logins.create', compact('folders'));
     }
 
     public function store(Request $request)
@@ -44,10 +48,12 @@ class LoginController extends Controller
             'password_encrypted' => 'required|string',
             'url'                => 'nullable|url',
             'notes'              => 'nullable|string',
+            'folder_id'          => ['nullable', Rule::exists('folders', 'id')->where('user_id', auth()->id())],
         ]);
 
         Login::create([
             'user_id'            => auth()->id(),
+            'folder_id'          => $request->folder_id,
             'title'              => $request->title,
             'username'           => $request->username,
             'email'              => $request->email,
@@ -68,7 +74,8 @@ class LoginController extends Controller
     public function edit(Login $login)
     {
         abort_if($login->user_id !== auth()->id(), 403);
-        return view('logins.edit', compact('login'));
+        $folders = Folder::where('user_id', auth()->id())->orderBy('name')->get();
+        return view('logins.edit', compact('login', 'folders'));
     }
 
     public function update(Request $request, Login $login)
@@ -82,9 +89,11 @@ class LoginController extends Controller
             'password_encrypted' => 'required|string',
             'url'                => 'nullable|url',
             'notes'              => 'nullable|string',
+            'folder_id'          => ['nullable', Rule::exists('folders', 'id')->where('user_id', auth()->id())],
         ]);
 
         $login->update([
+            'folder_id'          => $request->folder_id,
             'title'              => $request->title,
             'username'           => $request->username,
             'email'              => $request->email,

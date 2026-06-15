@@ -4,34 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Card;
+use App\Models\Folder;
+use Illuminate\Validation\Rule;
 
 class CardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $cards = Card::where('user_id', auth()->id())->latest()->get();
+        $cards = Card::where('user_id', auth()->id())->with('folder')->latest()->get();
 
         return view('cards.index', compact('cards'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         if (!auth()->user()->is_premium) {
             return redirect()->route('upgrade.show')
             ->with('warning', 'Suscríbete a Premium para guardar tarjetas.');
         }
-        return view('cards.create');
+
+        $folders = Folder::where('user_id', auth()->id())->orderBy('name')->get();
+
+        return view('cards.create', compact('folders'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         if ($request->has('card_number_encrypted')) {
@@ -51,7 +47,6 @@ class CardController extends Controller
                     $month = intval($request->expiry_month);
                     $year = intval($value);
 
-                    // Normalizar año si viene en formato AA (ej: 26 -> 2026)
                     if ($year < 100) {
                         $year += 2000;
                     }
@@ -67,10 +62,12 @@ class CardController extends Controller
             'cvv_encrypted'         => 'nullable|numeric|digits_between:3,4',
             'brand'                 => 'nullable|string|max:20',
             'notes'                 => 'nullable|string',
+            'folder_id'             => ['nullable', Rule::exists('folders', 'id')->where('user_id', auth()->id())],
         ]);
 
         Card::create([
             'user_id'               => auth()->id(),
+            'folder_id'             => $request->folder_id,
             'cardholder_name'       => $request->cardholder_name,
             'card_number_encrypted' => $request->card_number_encrypted,
             'expiry_month'          => str_pad($request->expiry_month, 2, '0', STR_PAD_LEFT),
@@ -83,9 +80,6 @@ class CardController extends Controller
         return redirect()->route('cards.index')->with('success', 'Tarjeta guardada correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $card = Card::findOrFail($id);
@@ -94,21 +88,16 @@ class CardController extends Controller
         return view('cards.show', compact('card'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $card = Card::findOrFail($id);
-
         abort_if($card->user_id !== auth()->id(), 403);
 
-        return view('cards.edit', compact('card'));
+        $folders = Folder::where('user_id', auth()->id())->orderBy('name')->get();
+
+        return view('cards.edit', compact('card', 'folders'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $card = Card::findOrFail($id);
@@ -146,9 +135,11 @@ class CardController extends Controller
             'cvv_encrypted'         => 'nullable|numeric|digits_between:3,4',
             'brand'                 => 'nullable|string|max:20',
             'notes'                 => 'nullable|string',
+            'folder_id'             => ['nullable', Rule::exists('folders', 'id')->where('user_id', auth()->id())],
         ]);
 
         $card->update([
+            'folder_id'             => $request->folder_id,
             'cardholder_name'       => $request->cardholder_name,
             'card_number_encrypted' => $request->card_number_encrypted,
             'expiry_month'          => str_pad($request->expiry_month, 2, '0', STR_PAD_LEFT),
@@ -161,13 +152,9 @@ class CardController extends Controller
         return redirect()->route('cards.index')->with('success', 'Tarjeta actualizada correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $card = Card::findOrFail($id);
-
         abort_if($card->user_id !== auth()->id(), 403);
 
         $card->delete();

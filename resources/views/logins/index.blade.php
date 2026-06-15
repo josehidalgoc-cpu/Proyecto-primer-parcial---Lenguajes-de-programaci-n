@@ -40,7 +40,6 @@
                 @forelse($logins as $login)
                     <tr class="hover:bg-gray-50 transition duration-150">
 
-                        {{-- Título --}}
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">
                                 <span class="font-semibold">{{ $login->title }}</span>
@@ -49,9 +48,11 @@
                                     Copiar
                                 </button>
                             </div>
+                            @if($login->folder)
+                                <span class="inline-block mt-1 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">📁 {{ $login->folder->name }}</span>
+                            @endif
                         </td>
 
-                        {{-- Correo --}}
                         <td class="px-6 py-4 text-gray-500">
                             <div class="flex items-center gap-2">
                                 <span>{{ $login->email ?? '—' }}</span>
@@ -64,7 +65,6 @@
                             </div>
                         </td>
 
-                        {{-- Usuario --}}
                         <td class="px-6 py-4 text-gray-500">
                             <div class="flex items-center gap-2">
                                 <span>{{ $login->username ?? '—' }}</span>
@@ -77,7 +77,7 @@
                             </div>
                         </td>
 
-                        {{-- Contraseña --}}
+                       
                         <td class="px-6 py-4 text-gray-500">
                             <div class="flex items-center gap-2">
                                 <span>{{ $login->password_encrypted }}</span>
@@ -88,7 +88,7 @@
                             </div>
                         </td>
 
-                        {{-- URL --}}
+                        
                         <td class="px-6 py-4 text-gray-500">
                             <div class="flex items-center gap-2">
                                 @if($login->url)
@@ -103,12 +103,12 @@
                             </div>
                         </td>
 
-                        {{-- Notas --}}
+                        
                         <td class="px-6 py-4 text-gray-500">
                             {{ $login->notes ?? '—' }}
                         </td>
 
-                        {{-- Acciones --}}
+                        
                         <td class="px-6 py-4">
                             <div class="flex gap-2">
                                 <a href="{{ route('logins.edit', $login) }}"

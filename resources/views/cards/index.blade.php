@@ -21,12 +21,13 @@
         @forelse($cards as $card)
             <div class="bg-gradient-to-br from-slate-700 to-slate-900 text-white p-6 rounded-xl shadow-lg">
 
-                {{-- Marca --}}
                 <div class="flex justify-between items-start mb-4">
                     <span class="text-sm font-semibold tracking-widest uppercase text-slate-300">{{ $card->brand ?? 'Tarjeta' }}</span>
+                    @if($card->folder)
+                        <span class="text-xs bg-slate-700 text-blue-300 px-2 py-1 rounded-full">📁 {{ $card->folder->name }}</span>
+                    @endif
                 </div>
 
-                {{-- Número --}}
                 <div class="mb-1 text-xs text-slate-400 uppercase tracking-wider">Número</div>
                 <div class="flex items-center gap-2 mb-4">
                     <span class="text-lg font-mono tracking-widest">{{ $card->card_number_encrypted }}</span>
@@ -36,7 +37,6 @@
                     </button>
                 </div>
 
-                {{-- Titular --}}
                 <div class="mb-1 text-xs text-slate-400 uppercase tracking-wider">Titular</div>
                 <div class="flex items-center gap-2 mb-4">
                     <span class="font-semibold">{{ $card->cardholder_name }}</span>
@@ -72,7 +72,6 @@
                     @endif
                 </div>
 
-                {{-- Acciones --}}
                 <div class="flex gap-2 mt-2 border-t border-slate-600 pt-4">
                     <a href="{{ route('cards.edit', $card) }}"
                         style="background-color: #facc15; color: #000;"

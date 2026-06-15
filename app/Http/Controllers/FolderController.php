@@ -10,7 +10,7 @@ class FolderController extends Controller
     public function index()
     {
         $folders = Folder::where('user_id', auth()->id())
-            ->withCount(['identities', 'secureNotes'])
+            ->withCount(['identities', 'secureNotes', 'cards', 'logins'])
             ->latest()
             ->get();
 
@@ -40,7 +40,7 @@ class FolderController extends Controller
     {
         abort_if($folder->user_id !== auth()->id(), 403);
 
-        $folder->load(['identities', 'secureNotes']);
+        $folder->load(['identities', 'secureNotes', 'cards', 'logins']);
 
         return view('folders.show', compact('folder'));
     }

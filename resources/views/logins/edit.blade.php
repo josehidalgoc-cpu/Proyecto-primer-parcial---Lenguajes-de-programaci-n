@@ -44,7 +44,7 @@
             <label class="block text-sm font-semibold text-gray-700 mb-1">URL</label>
             <input type="text" name="url" value="{{ old('url', $login->url) }}"
                 class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="https://paginaweb.com">m
+                placeholder="https://paginaweb.com">
         </div>
 
         <div>
@@ -52,6 +52,18 @@
             <textarea name="notes" rows="3"
                 class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 placeholder="Opcional...">{{ old('notes', $login->notes) }}</textarea>
+        </div>
+
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Carpeta (opcional)</label>
+            <select name="folder_id" class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <option value="">Sin carpeta</option>
+                @foreach($folders as $folder)
+                    <option value="{{ $folder->id }}" {{ old('folder_id', $login->folder_id) == $folder->id ? 'selected' : '' }}>
+                        {{ $folder->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <div class="flex gap-3 pt-2">
