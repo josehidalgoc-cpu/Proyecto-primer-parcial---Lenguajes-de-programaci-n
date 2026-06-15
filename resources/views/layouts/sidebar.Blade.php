@@ -14,6 +14,18 @@
             </div>
 
             <div class="space-y-1">
+                <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 block">Organización</span>
+                <a href="{{ route('folders.index') }}" class="flex items-center gap-2 px-4 py-2 rounded text-sm text-slate-400 hover:bg-slate-800 hover:text-blue-400 transition duration-200 {{ request()->routeIs('folders.*') ? 'bg-slate-800 text-blue-400' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                    Ver Mis Carpetas
+                </a>
+                <a href="{{ route('folders.create') }}" class="block px-4 py-2 rounded text-sm text-slate-400 hover:bg-slate-800 hover:text-blue-400 transition duration-200">
+                    + Nueva Carpeta
+                </a>
+            </div>
+
+
+            <div class="space-y-1">
                 <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2 block">Inicios de Sesión</span>
                 <a href="{{ route('logins.index') }}" class="flex items-center gap-2 px-4 py-2 rounded text-sm text-slate-400 hover:bg-slate-800 hover:text-blue-400 transition duration-200 {{ request()->routeIs('logins.*') ? 'bg-slate-800 text-blue-400' : '' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>

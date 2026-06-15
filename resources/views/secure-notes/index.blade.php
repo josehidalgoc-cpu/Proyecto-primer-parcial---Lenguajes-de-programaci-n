@@ -27,6 +27,11 @@
                             <h3 class="font-bold text-gray-800 text-lg truncate">{{ $note->title }}</h3>
                         </div>
                         <p class="text-sm text-gray-400 italic mb-4">Contenido protegido — pulsa "Ver" para mostrar.</p>
+                        @if($note->folder)
+                            <span class="inline-block mt-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                                📁 {{ $note->folder->name }}
+                            </span>
+                        @endif
                     </div>
                     <div class="flex gap-2 mt-2">
                         <a href="{{ route('secure-notes.show', $note) }}"

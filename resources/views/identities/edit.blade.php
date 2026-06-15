@@ -70,6 +70,17 @@
                 class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">{{ old('notes', $identity->notes) }}</textarea>
         </div>
 
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Carpeta (opcional)</label>
+            <select name="folder_id"
+                class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <option value="">Sin carpeta</option>
+                @foreach($folders as $folder)
+                    <option value="{{ $folder->id }}" {{ old('folder_id', $secureNote->folder_id) == $folder->id ? 'selected' : '' }}></option>
+                @endforeach
+            </select>
+        </div>
+
         <div class="flex gap-3 pt-2">
             <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200">
                 Actualizar

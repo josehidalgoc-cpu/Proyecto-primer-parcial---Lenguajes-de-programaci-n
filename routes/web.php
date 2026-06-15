@@ -9,6 +9,7 @@ use App\Models\Login;
 use App\Http\Controllers\UpgradeController;
 use App\Http\Controllers\SecureNoteController;
 use App\Http\Controllers\IdentityController;
+use App\Http\Controllers\FolderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,6 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/upgrade', [UpgradeController::class, 'activate'])->name('upgrade.activate');
     Route::resource('secure-notes', SecureNoteController::class);
     Route::resource('identities', IdentityController::class);
+    Route::resource('folders', FolderController::class);
 });
 
 Route::middleware('auth')->group(function () {

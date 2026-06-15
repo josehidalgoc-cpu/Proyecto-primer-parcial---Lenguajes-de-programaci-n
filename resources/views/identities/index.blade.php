@@ -28,6 +28,11 @@
                         </div>
                         <p class="text-sm text-gray-600 truncate">{{ $identity->full_name ?? 'Sin nombre' }}</p>
                         <p class="text-xs text-gray-400 truncate">{{ $identity->email ?? '' }}</p>
+                        @if($identity->folder)
+                            <span class="inline-block mt-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                                📁 {{ $identity->folder->name }}
+                            </span>
+                        @endif
                     </div>
                     <div class="flex gap-2 mt-4">
                         <a href="{{ route('identities.show', $identity) }}"

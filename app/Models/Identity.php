@@ -8,6 +8,7 @@ class Identity extends Model
 {
     protected $fillable = [
         'user_id',
+        'folder_id',
         'title',
         'full_name',
         'username',
@@ -21,6 +22,11 @@ class Identity extends Model
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function folder()
+    {
+        return $this->belongsTo(Folder::class);
     }
 
 }
