@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_premium',
     ];
 
     /**
@@ -43,6 +44,29 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_premium' => 'boolean',
         ];
     }
+
+    public function logins(){
+        return $this->hasMany(Login::class);
+    }
+
+    public function cards(){
+        return $this->hasMany(Card::class);
+    }
+
+    public function identities(){
+        return $this->hasMany(Identity::class);
+    }
+
+    public function secureNotes(){
+        return $this->hasMany(SecureNote::class);
+    }
+
+    public function folders()
+    {
+        return $this->hasMany(Folder::class);
+    }
+
 }

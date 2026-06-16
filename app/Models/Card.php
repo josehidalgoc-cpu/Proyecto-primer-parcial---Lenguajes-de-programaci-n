@@ -8,6 +8,7 @@ class Card extends Model
 {
     protected $fillable = [
         'user_id',
+        'folder_id',
         'cardholder_name',
         'card_number_encrypted',
         'expiry_month',
@@ -25,5 +26,10 @@ class Card extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function folder()
+    {
+        return $this->belongsTo(Folder::class);
     }
 }

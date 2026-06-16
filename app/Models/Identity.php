@@ -4,24 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Login extends Model
+class Identity extends Model
 {
     protected $fillable = [
         'user_id',
         'folder_id',
         'title',
+        'full_name',
         'username',
         'email',
-        'password_encrypted',
-        'url',
+        'phone',
+        'address',
+        'birth_date',
+        'company',
         'notes',
     ];
-    protected $casts = [
-        'password_encrypted' => 'encrypted',
-    ];
 
-    public function user()
-    {
+    public function user(){
         return $this->belongsTo(User::class);
     }
 
@@ -29,4 +28,5 @@ class Login extends Model
     {
         return $this->belongsTo(Folder::class);
     }
+
 }

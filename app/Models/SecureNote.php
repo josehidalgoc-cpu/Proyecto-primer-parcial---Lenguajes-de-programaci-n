@@ -4,24 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Login extends Model
+class SecureNote extends Model
 {
     protected $fillable = [
         'user_id',
         'folder_id',
         'title',
-        'username',
-        'email',
-        'password_encrypted',
-        'url',
-        'notes',
-    ];
-    protected $casts = [
-        'password_encrypted' => 'encrypted',
+        'content_encrypted',
     ];
 
-    public function user()
-    {
+    protected $casts = [
+        'content_encrypted' => 'encrypted',
+    ];
+
+    public function user(){
         return $this->belongsTo(User::class);
     }
 
