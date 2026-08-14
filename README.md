@@ -1,66 +1,133 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# KeyVault
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Una bóveda digital para guardar credenciales. La idea era resolver algo que todos hacemos mal: tener contraseñas, tarjetas y datos personales repartidos entre notas del celular, papeles y la memoria. KeyVault los centraliza en un solo lugar, detrás de una cuenta con autenticación, y los deja organizados por carpetas.
 
-## About Laravel
+Es un proyecto en equipo. Lo desarrollamos entre **Jose Hidalgo** y yo, repartiéndonos los módulos del sistema.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Qué hace
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Cada usuario tiene su propia bóveda privada, y dentro puede guardar cuatro tipos de elementos:
 
-## Learning Laravel
+- **Logins** — sitios web con su usuario y contraseña
+- **Tarjetas** — datos de tarjetas de crédito y débito
+- **Notas seguras** — texto libre que quieras mantener protegido
+- **Identidades** — datos personales como nombre completo, cédula, dirección y teléfono
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Todo se puede agrupar en **carpetas** para no terminar con una lista interminable. Además hay una sección **Premium** que plantea el modelo de suscripción del producto.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+El acceso está protegido con registro e inicio de sesión, y cada usuario solo ve lo que le pertenece.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Operaciones del sistema
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Código | Operación |
+|---|---|
+| OP-01 | Registro de usuario |
+| OP-02 | Inicio y cierre de sesión |
+| OP-03 | Crear, editar y eliminar logins |
+| OP-04 | Crear, editar y eliminar tarjetas |
+| OP-05 | Crear, editar y eliminar notas seguras |
+| OP-06 | Crear, editar y eliminar identidades |
+| OP-07 | Crear carpetas y asignarles elementos |
+| OP-08 | Consultar el panel general de la bóveda |
+| OP-09 | Acceder a la sección Premium |
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Cómo está construido
 
-## Contributing
+El sistema está organizado por módulos de dominio. Cada uno tiene su modelo, su controlador y sus vistas, y todos comparten la misma autenticación y el mismo esquema de carpetas.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+app/
+├── Models/          Eloquent: User, Login, Card, Note, Identity, Folder
+├── Http/
+│   └── Controllers/ Un controlador por módulo
+database/
+└── migrations/      Esquema de la base de datos
+resources/
+└── views/           Vistas Blade con Tailwind
+```
 
-## Code of Conduct
+La base de datos es MySQL y se accede con **Eloquent ORM**. La autenticación se montó sobre **Laravel Breeze**, lo que dejó resuelto el registro, el login y la protección de rutas desde el arranque.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Reparto del trabajo
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Módulo | Responsable |
+|---|---|
+| Identidades | **Eddy Lima** |
+| Notas Seguras | **Eddy Lima** |
+| Carpetas | **Eddy Lima** |
+| Logins | Jose Hidalgo |
+| Tarjetas | Jose Hidalgo |
+| Premium | Jose Hidalgo |
 
-## License
+Mi parte incluyó el modelo y las migraciones de esos tres módulos, sus controladores con el CRUD completo, las vistas Blade correspondientes y la relación entre carpetas y elementos, que es la que permite que un mismo contenedor agrupe distintos tipos de registros.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Tecnologías
+
+| Herramienta | Para qué |
+|---|---|
+| Laravel | Framework principal |
+| PHP | Lenguaje del backend |
+| Eloquent ORM | Acceso a datos y relaciones entre modelos |
+| Laravel Breeze | Registro, login y protección de rutas |
+| Blade | Plantillas de las vistas |
+| Tailwind CSS | Estilos de la interfaz |
+| MySQL | Base de datos |
+
+---
+
+## Cómo ejecutarlo
+
+Necesitas PHP, Composer, Node.js y un servidor MySQL corriendo.
+
+```bash
+git clone https://github.com/josehidalgoc-cpu/Proyecto-primer-parcial---Lenguajes-de-programaci-n.git
+cd Proyecto-primer-parcial---Lenguajes-de-programaci-n
+composer install
+npm install && npm run build
+cp .env.example .env
+php artisan key:generate
+```
+
+Antes de continuar, edita el archivo `.env` con los datos de tu base de datos:
+
+```
+DB_DATABASE=keyvault
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contraseña
+```
+
+Luego crea las tablas y levanta el servidor:
+
+```bash
+php artisan migrate
+php artisan serve
+```
+
+Abre `http://localhost:8000`, regístrate y ya puedes empezar a guardar elementos.
+
+---
+
+## Reflexión
+
+Este fue mi primer proyecto trabajando en equipo sobre el mismo repositorio, y ahí aprendí cosas que no se aprenden programando solo. Al principio nos pisábamos los archivos: los dos tocábamos las mismas vistas compartidas y las mismas migraciones, y resolver conflictos se volvió parte del día. Lo que nos ordenó fue repartirnos módulos completos en lugar de tareas sueltas —cada uno dueño de su dominio de punta a punta— y acordar antes de escribir código cómo se iban a llamar las tablas y las relaciones.
+
+En lo técnico, lo más difícil fue el módulo de carpetas. No es un CRUD más: una carpeta tiene que poder contener logins, tarjetas, notas e identidades al mismo tiempo, y eso obliga a pensar bien las relaciones en Eloquent en vez de improvisar una llave foránea por cada tipo. Entender cómo modelar esa relación fue el punto donde más me tocó parar a diseñar antes de escribir.
+
+---
+
+## Autores
+
+**Eddy Lima** — Ingeniería en Sistemas, Universidad Espíritu Santo
+[github.com/elima-hub](https://github.com/elima-hub) · [elima-hub.github.io](https://elima-hub.github.io/)
+
+**Jose Hidalgo** — [github.com/josehidalgoc-cpu](https://github.com/josehidalgoc-cpu)
